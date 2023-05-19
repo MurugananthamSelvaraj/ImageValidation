@@ -69,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
 
         },
@@ -81,17 +82,21 @@ WSGI_APPLICATION = 'ImageUpload.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Load configuration from TOML file
+with open('config.toml', 'r') as f:
+    config = toml.load(f)
+
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Testdb',
-        'USER': 'postgres',
-        'PASSWORD': 'Anands1@',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': config['database']['name'],
+        'USER': config['database']['user'],
+        'PASSWORD': config['database']['password'],
+        'HOST': config['database']['host'],
+        'PORT': config['database']['port'],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
