@@ -1,17 +1,10 @@
-import toml
 import tomllib
-config_filepath = 'config.toml'
+config_filepath = 'config\config.toml'
 
 
-class MyConfigClass:
-    with open('config.toml', 'r') as f:
-        config = toml.load(f)
-
-    DATABASE_CONFIG = config['database']
-    IMAGE_VALIDATION_CONFIG = config['image_validation']
-
+class Validationfiles:
     def validation_setting(self):
-        with open('config.toml', 'rb') as toml_file:
+        with open(config_filepath, 'rb') as toml_file:
             config = tomllib.load(toml_file)
             self.image_size = config.get('image_validation')['image_size']
             self.image_format = config.get('image_validation')['image_format']

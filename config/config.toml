@@ -1,9 +1,9 @@
 [database]
-name = "Testdb"
-user = "postgres"
-password = "Anands1@"
-host = "127.0.0.1"
-port = 5432
+name = '' #provide your db name
+user ='' #provide your db user name
+password ='' #provide your password
+host ='' #provide your host
+port ='' #provide you port number
 
 [image_validation]
 image_size = 1145728

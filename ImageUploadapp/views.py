@@ -91,12 +91,12 @@ def upload(request):
 
             form.save()
             logger.debug('Debug message')
-            return render(request, "display.html", context)
+        return render(request, "display.html", context)
 
     else:
         form = ImageForm()
         logger.warning('Warning message')
-        return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form})
 
 
 def success(request):

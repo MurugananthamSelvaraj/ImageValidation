@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import toml
-from config import MyConfigClass
+from config.config import Configfiles
 
 # # Database configuration
 # db_config = MyConfigClass.database_setting()
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'ImageUpload.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-configObj = MyConfigClass()
+configObj = Configfiles()
 
 DATABASES = {
     'default': {
