@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import toml
+from config import MyConfigClass
+
+# # Database configuration
+# db_config = MyConfigClass.database_setting()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,19 +86,16 @@ WSGI_APPLICATION = 'ImageUpload.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# Load configuration from TOML file
-with open('config.toml', 'r') as f:
-    config = toml.load(f)
+configObj = MyConfigClass()
 
-# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config['database']['name'],
-        'USER': config['database']['user'],
-        'PASSWORD': config['database']['password'],
-        'HOST': config['database']['host'],
-        'PORT': config['database']['port'],
+        'NAME':  configObj.DATABASE_CONFIG['name'],
+        'USER': configObj.DATABASE_CONFIG['user'],
+        'PASSWORD': configObj.DATABASE_CONFIG['password'],
+        'HOST': configObj.DATABASE_CONFIG['host'],
+        'PORT': configObj.DATABASE_CONFIG['port'],
     }
 }
 
@@ -144,3 +145,35 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 IMGPATH = "display.html"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'details': {
+            'format': '%(levelname)s %(asctime)s [%(filename)s %(funcName)s %(lineno)d] [Pid %(process)d, Thread %(thread)d]: %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'loggerDjango-debug.log',
+            'formatter': 'details',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            # 'level': 'DEBUG',
+            'propagate': True,
+            # 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG')
+        },
+    },
+}
