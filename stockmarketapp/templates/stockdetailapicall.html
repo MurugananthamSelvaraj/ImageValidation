@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <form action="{% url 'Stockapp:indexpage' %}" method="POST">
+  {% csrf_token %}
+  <div class="row mb-3">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">https</label>
+    <div class="col-sm-10">
+      <input name="https" type="text" class="form-control" id="" />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">token</label>
+    <div class="col-sm-10">
+      <input name="token" type="text" class="form-control" id="" value="pk_64f3293b050744ebb5390a20c2ba3aeb" />
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Click Here</button>
+</form>
+</div>

@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import toml
+from config.config import Configfiles
+
+# # Database configuration
+# db_config = MyConfigClass.database_setting()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'custom_filters',
+    'stockmarketapp',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
 
         },
@@ -81,17 +86,18 @@ WSGI_APPLICATION = 'ImageUpload.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+configObj = Configfiles()
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Testdb',
-        'USER': 'postgres',
-        'PASSWORD': 'Anands1@',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME':  configObj.DATABASE_CONFIG['name'],
+        'USER': configObj.DATABASE_CONFIG['user'],
+        'PASSWORD': configObj.DATABASE_CONFIG['password'],
+        'HOST': configObj.DATABASE_CONFIG['host'],
+        'PORT': configObj.DATABASE_CONFIG['port'],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -138,4 +144,39 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-IMGPATH = "display.html"
+DISPATH = "display.html",
+UPLOADPATH = "upload.html",
+REGPATH = "register.html",
+LOGPATH = "login.html"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'details': {
+            'format': '%(levelname)s %(asctime)s [%(filename)s %(funcName)s %(lineno)d] [Pid %(process)d, Thread %(thread)d]: %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'loggerDjango-debug.log',
+            'formatter': 'details',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            # 'level': 'DEBUG',
+            'propagate': True,
+            # 'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG')
+        },
+    },
+}

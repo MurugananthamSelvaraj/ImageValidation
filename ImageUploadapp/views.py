@@ -11,6 +11,8 @@ from PIL import Image
 import io
 from django.conf import settings
 from django.core.exceptions import ValidationError
+import logging
+logger = logging.getLogger(__name__)
 
 
 def register(request):
@@ -24,17 +26,19 @@ def register(request):
         if password == confirm_password:
             if User.objects.filter(username=username).exists():
                 messages.info(request, "User Already Exist")
+                logger.warning('Warning message')
                 return redirect(register)
             else:
                 user = User.objects.create_user(
                     username=username, password=password, email=email, first_name=first_name, last_name=last_name)
                 user.set_password(password)
                 user.save()
+                logger.debug('Debug message')
                 return redirect('login_user')
 
     else:
-        print("This is not post method")
-        return render(request, "register.html")
+        logger.warning('Warning message')
+        return render(request, settings.REGPATH)
 
 
 def login_user(request):
@@ -50,17 +54,21 @@ def login_user(request):
             context = {
                 'data': data
             }
+            logger.info('Info message')
             return render(request, "display.html", context)
 
         else:
             messages.info(request, "Invalid Username or Password")
+            logger.warning('Warning message')
             return redirect('login_user')
     else:
-        return render(request, "login.html")
+        logger.warning('Warning message')
+        return render(request, settings.LOGPATH)
 
 
 def logout_user(request):
     auth.logout(request)
+    logger.info('Info message')
     return redirect("login_user")
 
 
@@ -82,14 +90,17 @@ def upload(request):
             form.binaryimage = binaryimage.read()
 
             form.save()
-            return render(request, "display.html", context)
+            logger.debug('Debug message')
+        return render(request, settings.DISPATH, context)
 
     else:
         form = ImageForm()
-    return render(request, 'upload.html', {'form': form})
+        logger.warning('Warning message')
+    return render(request, settings.UPLOADPATH, {'form': form})
 
 
 def success(request):
+    logger.info('Info message')
     return HttpResponse('successfully uploaded')
 
 
@@ -99,7 +110,8 @@ def display(request):
     context = {
         'data': data,
     }
-    return render(request, settings.IMGPATH, context)
+    logger.info('Info message')
+    return render(request, settings.DISPATH, context)
 
 
 def SearchImage(request):
@@ -109,4 +121,5 @@ def SearchImage(request):
     context = {
         'data': images
     }
-    return render(request, "display.html", context)
+    logger.info('Info message')
+    return render(request, settings.DISPATH, context)
