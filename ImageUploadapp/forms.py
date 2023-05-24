@@ -15,21 +15,20 @@ class ImageForm(forms.ModelForm):
         model = Images
         fields = ('title', 'description', 'binaryimage')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # call the validation_setting function
+    def clean_image(self):
+        image_file = self.cleaned_data.get('binaryimage')
         self.config = Validationfiles().validation_setting()
-
-    def clean_binaryimage(self):
-        image = self.cleaned_data.get('binaryimage')
-
-        if not image:
+        if not image_file:
             raise ValidationError(self.config.image_empty_error)
         else:
-            if image:
-                extension = image.name.split(".")[-1]
-            if extension not in self.config.image_format:
-                raise ValidationError(self.config.image_format_error)
-            if image.size > self.config.image_size:
+            extension = image_file.name.split(".")[-1]
+        if extension not in self.config.image_format:
+            raise ValidationError(self.config.image_format_error)
+        if image_file:
+            if image_file.size > self.config.image_size:
                 raise ValidationError(self.config.image_size_error)
-            return image
+            return image_file
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['binaryimage'].error_messages['invalid_image'] = 'Please upload a JPG or PNG image.'

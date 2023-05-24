@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'custom_filters',
+    'stockmarketapp',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +144,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-IMGPATH = "display.html"
+DISPATH = "display.html",
+UPLOADPATH = "upload.html",
+REGPATH = "register.html",
+LOGPATH = "login.html"
 
 LOGGING = {
     'version': 1,

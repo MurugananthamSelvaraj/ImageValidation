@@ -38,7 +38,7 @@ def register(request):
 
     else:
         logger.warning('Warning message')
-        return render(request, "register.html")
+        return render(request, settings.REGPATH)
 
 
 def login_user(request):
@@ -63,7 +63,7 @@ def login_user(request):
             return redirect('login_user')
     else:
         logger.warning('Warning message')
-        return render(request, "login.html")
+        return render(request, settings.LOGPATH)
 
 
 def logout_user(request):
@@ -91,12 +91,12 @@ def upload(request):
 
             form.save()
             logger.debug('Debug message')
-        return render(request, "display.html", context)
+        return render(request, settings.DISPATH, context)
 
     else:
         form = ImageForm()
         logger.warning('Warning message')
-    return render(request, 'upload.html', {'form': form})
+    return render(request, settings.UPLOADPATH, {'form': form})
 
 
 def success(request):
@@ -111,7 +111,7 @@ def display(request):
         'data': data,
     }
     logger.info('Info message')
-    return render(request, settings.IMGPATH, context)
+    return render(request, settings.DISPATH, context)
 
 
 def SearchImage(request):
@@ -122,4 +122,4 @@ def SearchImage(request):
         'data': images
     }
     logger.info('Info message')
-    return render(request, "display.html", context)
+    return render(request, settings.DISPATH, context)
